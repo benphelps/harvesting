@@ -17,7 +17,7 @@ module Harvesting
       end
 
       def path
-        id.nil? ? "projects/#{@ref_project.id}/task_assignments" : "projects/#{@ref_project.id}/task_assignments/#{id}"
+        @attributes['id'].nil? ? "projects/#{@ref_project.id}/task_assignments" : "projects/#{@ref_project.id}/task_assignments/#{@attributes['id']}"
       end
     end
   end
