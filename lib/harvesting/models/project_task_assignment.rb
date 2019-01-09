@@ -3,6 +3,7 @@ module Harvesting
     class ProjectTaskAssignment < Base
       attributed :id,
                  :project,
+                 :task,
                  :user,
                  :is_active,
                  :is_project_manager,

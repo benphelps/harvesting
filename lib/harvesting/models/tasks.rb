@@ -37,7 +37,7 @@ module Harvesting
 
       def fetch_next_page
         new_page = page + 1
-        @entries += client.tasks(page: new_page).entries
+        @entries += @client.tasks(page: new_page).entries
         @attributes['page'] = new_page
       end
     end
