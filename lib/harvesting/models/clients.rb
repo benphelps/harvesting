@@ -1,6 +1,6 @@
 module Harvesting
   module Models
-    class ProjectUserAssignments < Base
+    class Clients < Base
       include Harvesting::Enumerable
       extend Forwardable
 
@@ -12,15 +12,21 @@ module Harvesting
                  :page,
                  :links
 
-      def initialize(ref_project, attrs, opts = {})
-        super(attrs.reject {|k,v| k == "user_assignments" }, opts)
-        @ref_project = ref_project
+      attr_reader :entries
+
+      def initialize(attrs, opts = {})
+        super(attrs.reject {|k,v| k == "clients" }, opts)
         @api_page = attrs
-        @entries = attrs["user_assignments"].map do |entry|
-          ProjectUserAssignment.new(ref_project, entry, client: opts[:client])
+        @entries = attrs["clients"].map do |entry|
+          Client.new(entry, client: opts[:client])
         end
       end
 
+      # def each
+      #   @entries.each_with_index do |time_entry, index|
+      #     yield(time_entry)
+      #   end
+      # end
       def page
         @attributes['page']
       end
@@ -31,7 +37,7 @@ module Harvesting
 
       def fetch_next_page
         new_page = page + 1
-        @entries += client.user_assignments(@ref_project, page: new_page).entries
+        @entries += @client.clients(page: new_page).entries
         @attributes['page'] = new_page
       end
     end

@@ -25,10 +25,8 @@ module Harvesting
       Harvesting::Models::User.new(get("users/me"), client: self)
     end
 
-    def clients
-      get("clients")["clients"].map do |result|
-        Harvesting::Models::Client.new(result, client: self)
-      end
+    def clients(opts = {})
+      Harvesting::Models::Clients.new(get("clients", opts), client: self)
     end
 
     def contacts
