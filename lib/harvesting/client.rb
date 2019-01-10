@@ -30,9 +30,7 @@ module Harvesting
     end
 
     def contacts
-      get("contacts")["contacts"].map do |result|
-        Harvesting::Models::Contact.new(result, client: self)
-      end
+      Harvesting::Models::Contacts.new(get("contacts", opts), client: self)
     end
 
     def time_entries(opts = {})

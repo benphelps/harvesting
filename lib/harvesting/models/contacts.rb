@@ -1,6 +1,6 @@
 module Harvesting
   module Models
-    class ProjectTaskAssignments < Base
+    class Contacts < Base
       include Harvesting::Enumerable
       extend Forwardable
 
@@ -12,12 +12,13 @@ module Harvesting
                  :page,
                  :links
 
-      def initialize(ref_project, attrs, opts = {})
-        super(attrs.reject {|k,v| k == "task_assignments" }, opts)
-        @ref_project = ref_project
+      attr_reader :entries
+
+      def initialize(attrs, opts = {})
+        super(attrs.reject {|k,v| k == "contacts" }, opts)
         @api_page = attrs
-        @entries = attrs["task_assignments"].map do |entry|
-          ProjectTaskAssignment.new(ref_project, entry, client: opts[:client])
+        @entries = attrs["contacts"].map do |entry|
+          Contact.new(entry, client: opts[:client])
         end
       end
 
@@ -31,7 +32,7 @@ module Harvesting
 
       def fetch_next_page
         new_page = page + 1
-        @entries += @client.task_assignments(@ref_project, page: new_page).entries
+        @entries += @client.contacts(page: new_page).entries
         @attributes['page'] = new_page
       end
     end
